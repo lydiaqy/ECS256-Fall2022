@@ -1,0 +1,230 @@
+ %\documentstyle [10pt,amsmath,amsfonts]{article}
+\documentclass [10pt] {article}
+\addtolength{\oddsidemargin}{-.75in}
+\addtolength{\evensidemargin}{-.75in}
+\addtolength{\textwidth}{1.5in}
+\addtolength{\topmargin}{-.75in}
+\addtolength{\textheight}{1.5in}
+
+\usepackage{amsfonts}      
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+%\usepackage{tikz}
+\usepackage{multicol}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{gensymb}
+\usepackage{ulem}
+\makeatletter
+\renewcommand*\env@matrix[1][c]{\hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols #1}}
+\makeatother
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+\usepackage{minted}
+\usemintedstyle{borland}
+\usepackage{xcolor} % to access the named colour LightGray
+\definecolor{LightGray}{gray}{0.9}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\ltset}{\mathcal{L}}
+\newcommand{\ov}{\overline}
+\newcommand{\con}{\overline}
+\newcommand{\union}{\bigcup}
+\newcommand{\intersect}{\bigcap}
+\newcommand{\trace}{\mathrm{tr}}
+\newcommand{\dash}{\textemdash}
+\newcommand{\eps}{\epsilon}
+\newcommand{\Stab}{\mathrm{Stab}}
+\newcommand{\im}{\mathrm{Im}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\Aut}{\mathrm{Aut}}
+\newcommand{\Inn}{\mathrm{Inn}}
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\norm}{\triangleleft}
+\newcommand{\normeq}{\trianglelefteq}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\bin}{\mathrm{bin}}
+\newcommand{\supp}{\mathrm{supp}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\unif}{\mathrm{unif}}
+\newcommand{\Bern}{\mathrm{Bern}}
+\newcommand{\ul}{\underline}
+\newcommand{\lcm}{\mathrm{lcm}}
+\newcommand{\Perm}{\mathrm{Perm}}
+\newcommand{\Core}{\mathrm{Core}}
+\newcommand{\ess}{\text{ess}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\median}{\mathrm{median}}
+\renewcommand{\P}{\mathbb{P}}
+\renewcommand{\phi}{\varphi}
+
+\renewcommand{\emptyset}{\varnothing}
+
+\begin{document}
+{\noindent}ECS 256 - Professor N. Matloff\hfill Group: Yun Qin, Jane Park\\
+Fall 2022\hfill 10 October 2022
+\begin{center}{\Large Problem Set 1}\end{center}
+\begin{enumerate}
+\item[{\bf1.}] Let $X, \ X_1, \ \cdots, \ X_n$ be independent, exponentially distributed random variables with parameter $\lambda$.
+\begin{enumerate}
+\item[{\bf(a)}] {\it Find the median of $X$, i.e. a number $m$ such that $\P(X < m) = \ds\frac{1}{2}$, in terms of $\lambda$.}\\\\
+To find the median $m$ of $X\sim\exp(\lambda)$, compute:
+\begin{align*}
+    \frac{1}{2} &= \P(X\le m)\\
+    &=\int_0^mf_X(x)dx\\
+    &=\int_0^m\lambda e^{-\lambda x}dx\\
+    &=-e^{-\lambda x}\bigg\vert_{x=0}^{x=m}\\
+    &=1-e^{-\lambda m}.
+\end{align*}
+Solving $\ds\frac{1}{2}=1-e^{-\lambda m}$, we have that the median of $X\sim\exp(\lambda)$ is $\ds m = \frac{\ln(2)}{\lambda}$.
+\item[{\bf(b)}] {\it Let the random variable $M := \text{median}(X_1,...,X_n)$. Usually computation of medians must take into account the possibility of tied values; e.g. see \href{http://minato.sip21c.org/msb/man/truemedian.html}{this site}. But not here. Why not?}\\\\
+
+By nature of continuous random variables, the possibility that for any two $j,k\in\{1,\cdots,n\}$ be such that $X_j = X_k=c$, for any $c\in[0,\infty)$ is zero. This is because:
+$$\P(X_j=X_k)=\int_0^\infty\int_{c}^c\lambda_j e^{-\lambda x_j}\lambda_k e^{-\lambda x_k}dx_jdx_k=\int_0^\infty 0 dx_k=0.$$
+
+Having more than two ties has the same zero probability, because that probability is naturally supposed to be no greater than the previously calculated possibility.
+
+Now if we expand the chances of any number of tied values, this becomes a (finite) combinatorial problem, which culminates to:
+\begin{align*}\P\left(\text{Any number of tied values in }X_1,\cdots X_n\right)&=\sum_{i=2}^n \binom{n}{i}\P\left(\text{Any $i$ ties in }X_1,\cdots,X_n\right)\\
+&=\sum_{i=2}^n 0\\
+&= 0.
+\end{align*}
+\newpage
+\item[{\bf(c)}] {\it Find $\ds\P\left(X_1 < \frac{6}{5}X_2\right)$.}\\\\
+The region for $(x_1,x_2)\in(\R_{\ge0})^2$ defined $\ds x_1<\frac{6}{5}x_2$ is the region
+$$D:=\left\{(x_1,x_2)\in(\R_{\ge0})^2 \ : \ x_1<\frac{6}{5}x_2 \text{ \ for all \ }x_2\in\R\right\}.$$
+Rewrite $\ds\P\left(X_1<\frac{6}{5}X_2\right)$ as $\ds\P\left(\frac{6}{5}X_2-X_1>0\right)$. Then for $X_1,X_2\sim\exp(\lambda)$:
+\begin{align*}
+    \P\left(\frac{6}{5}X_2-X_1>0\right) 
+    &=\int_D f_{X_1,X_2}(x_1,x_2)d(x_1,x_2)\\
+    &=\int_D f_{X_1}(x_1)f_{X_2}(x_2)d(x_1,x_2),&&\text{as $X_1$ and $X_2$ are indep.;}\\
+    &=\int_0^\infty\int_0^{\frac{6}{5}x_2}\left(\lambda e^{-\lambda x_1}\right)\left(\lambda e^{-\lambda x_2}\right)dx_1dx_2\\
+    &=\int_0^\infty\left[\int_0^{\frac{6}{5}x_2}\lambda e^{-\lambda x_1}dx_1\right]\lambda e^{-\lambda x_2}dx_2\\
+    &=\int_0^\infty\left[1-e^{-\frac{6}{5}\lambda x_2}\right]\lambda e^{-\lambda x_2}dx_2\\
+    &=\int_0^\infty f_{X_2}(x_2)dx_2-\int_0^\infty f_{X_2}\left(\frac{11 x_2}{5}\right)dx_2\\
+    &=\int_0^\infty f_{X_2}(x_2)dx_2-\frac{5}{11}\int_0^\infty f_{X_2}\left(u\right)du,&&\text{where $u:=\frac{11}{5}x_2$, $dx=\frac{5}{11}du$;}\\
+    &=1-\frac{5}{11}\cdot1\\
+    &=\frac{6}{11}.
+\end{align*}
+\newpage
+\item[{\bf(d)}] {\it Say $n = 2$, and that $X_j$ is exponentially distributed with parameter $\lambda_j$, $j = 1,\ 2$. We choose one of the $X_j$ at random, with probability $p_j$. Let $T$ be the result. Find $\E[T]$ and $\Var(T)$ in terms of the $\lambda_j$ and the $p_j$.}\\\\
+Since $n = 2$, we have that $T$ is a Bernoulli probability on $X_j\sim\exp(\lambda_j$ with a probability of $p_j$, $j = 1,2$. To keep in format with this problem's preferred answer format, we will not call $p_2=1-p_1$, and simply refer to each of them as $p_j$.
+
+By the {\bf law of total expectation},
+\begin{align*}
+    \E[T]&=\sum_{j=1}^2\P(T=X_1)\E[T \ | \ T=X_j]\\
+    &=\sum_{j=1}^2p_j\E[X_j]\\
+    &=\sum_{j=1}^2p_j\frac{1}{\lambda_j},&&\text{since $X_j\sim\exp(\lambda_j)$ implies $\E[X_j]=\frac{1}{\lambda_j}$;}%=\frac{p_1}{\lambda_1}+\frac{p_2}{\lambda_2};
+\end{align*}
+and,
+\begin{align*}
+    \E[T^2]&=\sum_{j=1}^2\P(T=X_1)\E[T^2 \ | \ T=X_j]\\
+    &=\sum_{j=1}^2p_j\E[X_j^2]\\
+    &=\sum_{j=1}^2p_j\int_0^\infty x_jf_{X_j}(x_j)dx_j\\
+    &=\sum_{j=1}^2p_j\int_0^\infty\lambda_jx_j^2e^{-\lambda_j x_j}dx_j,\\
+    &=\sum_{j=1}^2p_j\lim_{t_j\to\infty}\left[-\left(x_j^2+\frac{2}{\lambda_j}x_j+\frac{2}{\lambda_j^2}\right)e^{-\lambda_j x_j}\right]_{x_j=0}^{x_j=t_j}\\
+    &=\sum_{j=1}^2p_j\lim_{t_j\to\infty}\left[\frac{2}{\lambda_j^2}-\left(t_j^2+\frac{2}{\lambda_j}t_j+\frac{2}{\lambda_j^2}\right)e^{-\lambda_jt_j}\right]\\
+    &=\sum_{j=1}^2\frac{2p_j}{\lambda_j^2},&&\text{using {\bf L'H\^{o}pital's rule}.}%&=\frac{2p_1}{\lambda_1^2}+\frac{2p_2}{\lambda_2^2}.
+\end{align*}
+Then $\ds\E[T]=\frac{p_1}{\lambda_1}+\frac{p_2}{\lambda_2}$, and by the {\bf law of total variance},
+$$\Var(T)=\E[T^2]-\E[T]^2=\sum_{j=1}^2\frac{2p_j}{\lambda_j^2}-\left(\sum_{j=1}^2\frac{p_j}{\lambda_j}\right)^2=\frac{2p_1-p_1^2}{\lambda_1^2}-2\frac{p_1p_2}{\lambda_1\lambda_2}+\frac{2p_2-p_2^2}{\lambda_2^2}.$$ 
+\end{enumerate}
+\newpage
+\item[{\bf2.}] {\it Say the random variable $X$ has an exponential distribution with parameter $\lambda$. However, our observation of it is truncated at $c$, so that our observed value $T:=\min(X,c)$. Derive a formula for $\Var(T)$ as a function of $\lambda$ and $c$, using the {\bf``Pythagorean Theorem for variance''} ({\bf Law of Total Variance}, }\href{https://heather.cs.ucdavis.edu/~matloff/132/PLN/OldPLN/ProbStatBook256Fall2022.pdf}{SRC} {\it p.54). Write simulation code to verify your formula.}\\\\
+The {\bf law of total variance} tells us that $\ds\Var(T)=\E[T^2]-\E[T]^2$. We calculate each of these values, using the {\bf law of total expectation} on $T^k$ for $k=1,2$:
+$$\E[T^k]:=\E[T^k \ | \ X\le c]\P(X\le c)+\E[T^k \ | \ X>c]\P(X>c).$$
+However, notice that $\E[T^k \ | \ X>c] = c^k$, since the expectation is conceptually the most likely value of $T^k$, which if $X>c$ automatically makes $T^k\equiv c^k$, exactly. (One may also make a uniform distribution argument to show that $\ds E[T^k \ | \ X>c] = c^k$.)
+
+Also, $\ds X\sim\exp(\lambda)$ implies $\ds\P(X>c)=\int_c^\infty f_X(x)dx=e^{-\lambda c}$, and $\ds\P(X\le c)=1-\P(X>c)=1-e^{-\lambda c}$.
+
+This leaves:
+\begin{multicols}{2}
+\begin{align*}
+    \E[T|X\le c]:&=\int_0^c\lambda x e^{-\lambda x}dx\\
+    &=-xe^{-\lambda x}\bigg\vert_{x=0}^{x=c}+\int_0^c e^{-\lambda x}dx\\
+    &=-xe^{-\lambda x}-\frac{1}{\lambda}e^{-\lambda x}\bigg\vert_{x=0}^{x=c}\\
+    &=\frac{1}{\lambda}-\left(c+\frac{1}{\lambda}\right)e^{-\lambda c}
+\end{align*}
+\vfill
+
+\columnbreak
+\begin{align*}
+    \E[T^2|X\le c]:&=\int_0^c\lambda x^2 e^{-\lambda x}dx\\
+    &= -x^2 e^{-\lambda x}\bigg\vert_{x=0}^{x=c}+\frac{2}{\lambda}\E[T|X\le c]\\
+    &= -c^2e^{-\lambda c}+\frac{2}{\lambda}\left(-c-\frac{1}{\lambda}\right)e^{-\lambda c}\\
+    &= \frac{2}{\lambda^2}-\left(c^2+\frac{2c}{\lambda}+\frac{2}{\lambda^2}\right)e^{-\lambda c}.
+\end{align*}
+\end{multicols}
+Thus,
+\begin{align*}
+\Var(T)(c,\lambda)&=\E[T^2]-\E[T]^2\\
+&=\P(X\le c)\E[T^2|X\le c]+\P(X>c)\E[T^2|X>c]\\
+& \ \ -\left(\P(X\le c)\E[T|X\le c]+\P(X>c)\E[T|X>c]\right)^2\\
+&=\left(1-e^{-\lambda c}\right)\int_0^c\lambda x^2 e^{-\lambda x}dx +c^2e^{-\lambda c}-\left(\left(1-e^{-\lambda c}\right)\int_0^c\lambda x e^{-\lambda x}dx +ce^{-\lambda c}\right)^2\\
+%&=(1-e^{-\lambda c})\left(\frac{2}{\lambda^2}-\left(c^2+\frac{2c}{\lambda}+\frac{2}{\lambda^2}\right)e^{-\lambda c}\right)+c^2e^{-\lambda c}\right)-\left((1-e^{-\lambda c})\frac{1}{\lambda}-\left(c+\frac{1}{\lambda}\right)e^{-\lambda c}+ce^{-\lambda c}\right)^2
+\end{align*}
+Conceptually speaking, the fact that $T$ is constant whenever $X\ge c$ implies that $\Var(T)\le\Var(X)$. As an cursory check, we see that, for example $\Var(T)(1,3) = 0.07950529 \le 0.111... = 1/3^2 = \Var(X)$.
+
+We checked that our random variable is correctly written, by checking \texttt{R}'s internal variance calculation, and saw a very strong resemblance for large sample sizes.
+\begin{minted}[
+baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize]
+{c}
+>print(diff_n)
+[1] 0.0246611975 0.0088572821 0.0049489390 0.0009356232
+\end{minted}
+
+It is not generally consistent throughout every simulation, but the general trend is that the difference of the variance of $10^n$ sample using \texttt{R}'s calulations, versus our mathematical computation for $\Var(T)\approx0.07950529$ which represents the variance of $N$ samples as $N\to\infty$ gets smaller, for $n=1,2,3,4$.
+
+So we decided do the average of one-hundred trial differences between each $10^n$ data sample experiments, and $\Var(T)\approx0.07950529$, for $n = 1,\cdots 5$.
+
+\begin{minted}[
+baselinestretch=1.2,bgcolor=LightGray,fontsize=\footnotesize]
+{c}
+> print(avg_diff_n)
+[1] 0.031991824 0.008758512 0.003163073 0.002013893 0.001828636
+\end{minted}
+
+This clearly exhibits a trend wherein higher sample sizes correlates to lower difference between variance values of the data, versus the mathematical calculation of $\Var(T)$.
+
+Therefore the $\Var(T)(c,\lambda)$, where $c=1$ and $\lambda=3$ is $\approx 0.07950529$ over $N$ sample sizes as $N\to\infty$, as desired.
+
+See \texttt{Problem2.R}for the program script.
+\newpage
+\item[{\bf3.}] {\it The {\bf Tower Property} says,
+$$\E\left[ \left[\E[Y \ | \ U,V]\right] \ | \ U\right] = \E\left[Y \ | \ U\right]$$
+Write simulation code that demonstrates this for a context in which $\ds\E[Y \ | \ U,V] = U + V$, $\E[Y \ | \ U] = U + \E[V \ | \ U]$.}\\\\
+
+See \texttt{Problem3.R} for the program script.
+
+Following the hint in blog, we use the following Bernoulli probabilities: \texttt{A} is defined as 0 or 1; \texttt{B} is defined as 0 or 10 and \texttt{C} is defined as 0 or 100; each with probability of \texttt{X=0} of $3/4, \ 1/3, \ 1/2$, and \texttt{W} is -1 or 1 with probabilities $1/2$.
+
+Then we defined \texttt{U <- A + C}, \texttt{V <- B + C}, and \texttt{Y <- U + V + W}.
+
+Then we ran the simulations to experimentally verify that $\ds\E[Y \ | \ U,V] = U + V$, $\E[Y \ | \ U] = U + \E[V \ | \ U]$.
+
+Running the simulation on our \texttt{Problem3.R} file, using 10000 samples for a single experiment.
+
+Running more samples will give us a smaller discrepancy between the left-hand sides and right-hand sides of each equation.
+
+\end{enumerate}
+\end{document}
